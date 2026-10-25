@@ -1,0 +1,12 @@
+<svg width="800" height="700" viewBox="0 0 800 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="700" fill="#171717"/>
+  <circle cx="628" cy="128" r="220" fill="#A78BFA" fill-opacity=".85"/>
+  <circle cx="174" cy="604" r="280" fill="#F59E0B" fill-opacity=".9"/>
+  <path d="M-40 230C142 68 346 66 520 216C665 341 766 352 858 266V560C711 662 548 617 415 508C246 370 113 378-40 506V230Z" fill="#FB7185" fill-opacity=".85"/>
+  <path d="M-45 294C124 156 278 154 431 266C595 386 681 410 845 320" stroke="#FFF7ED" stroke-width="4" stroke-opacity=".8"/>
+  <path d="M-25 352C140 222 274 222 416 323C572 434 697 454 826 390" stroke="#FFF7ED" stroke-width="2" stroke-opacity=".45"/>
+  <rect x="72" y="80" width="250" height="250" rx="125" stroke="#FFF7ED" stroke-width="2" stroke-opacity=".55"/>
+  <rect x="150" y="158" width="94" height="94" rx="47" fill="#FFF7ED" fill-opacity=".92"/>
+  <path d="M199 187V222M181.5 204.5H216.5" stroke="#171717" stroke-width="6" stroke-linecap="round"/>
+  <text x="74" y="641" fill="#FFF7ED" font-family="Arial, sans-serif" font-size="24" letter-spacing="5">PUBLISH / WEEKLY</text>
+</svg>
