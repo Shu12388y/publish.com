@@ -1,0 +1,18 @@
+{
+  "name": "@publish.com/types",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./types":"./dist/index.js"
+  },
+  "devDependencies": {
+    "@repo/typescript-config":"workspace:*"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "shubham",
+  "license": "ISC",
+  "type": "module"
+}

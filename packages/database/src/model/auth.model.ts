@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
 
-const authSchema = new mongoose.Schema(
+interface AuthDocument {
+  email: string;
+  password: string;
+  fullname: string;
+  organization: string;
+  organizationID: string;
+}
+
+const authSchema = new mongoose.Schema<AuthDocument>(
   {
     email: {
       type: String,
-      reqiured: true,
+      required: true,
     },
     password: {
       type: String,
@@ -30,4 +38,6 @@ const authSchema = new mongoose.Schema(
   },
 );
 
-export const Auth = mongoose.models.auths || mongoose.model("auth", authSchema);
+export const Auth =
+  (mongoose.models.auths as mongoose.Model<AuthDocument> | undefined) ||
+  mongoose.model<AuthDocument>("auth", authSchema);

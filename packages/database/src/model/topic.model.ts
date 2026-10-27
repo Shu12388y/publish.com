@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
-const topicSchema = new mongoose.Schema(
+interface TopicDocument {
+  topicName: string;
+  status: string;
+  organizationID: string;
+}
+
+const topicSchema = new mongoose.Schema<TopicDocument>(
   {
     topicName: {
       type: String,
@@ -10,6 +16,9 @@ const topicSchema = new mongoose.Schema(
       type: String,
       default: "0",
     },
+    organizationID: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -17,4 +26,5 @@ const topicSchema = new mongoose.Schema(
 );
 
 export const Topic =
-  mongoose.models.topics || mongoose.model("topic", topicSchema);
+  (mongoose.models.topics as mongoose.Model<TopicDocument> | undefined) ||
+  mongoose.model<TopicDocument>("topic", topicSchema);

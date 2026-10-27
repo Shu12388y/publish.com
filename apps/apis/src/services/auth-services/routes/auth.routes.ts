@@ -1,8 +1,8 @@
 import {Hono} from "hono";
-import {AuthController} from "../controller/auth.controller.js";
+import {authController} from "../controller/auth.controller.js";
 
 export const authRoute = new Hono();
 
-authRoute.post("/signin",AuthController.login);
-authRoute.post("/signup",AuthController.signup);
-authRoute.post("/signup",AuthController.signout);
+authRoute.post("/signin",authController.login);
+authRoute.post("/signup",authController.signup);
+authRoute.post("/signout",authController.signout);
