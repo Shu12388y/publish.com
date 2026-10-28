@@ -1,13 +1,25 @@
 import mongoose from "mongoose";
 
-const subscriberSchema = new mongoose.Schema(
+export interface SubscriberDocument {
+  email: string;
+  topicsubscriber: string;
+  isActive: boolean;
+  isVerified: boolean;
+  organizationId: string;
+}
+
+const subscriberSchema = new mongoose.Schema<SubscriberDocument>(
   {
     email: {
       type: String,
       required: true,
+      lowercase: true,
+      trim: true,
     },
     topicsubscriber: {
       type: String,
+      required: true,
+      default: "",
     },
     isActive: {
       type: Boolean,
@@ -28,4 +40,8 @@ const subscriberSchema = new mongoose.Schema(
   },
 );
 
-export const Subscribers = mongoose.models.subscribers || mongoose.model("subscriber",subscriberSchema);
+subscriberSchema.index({organizationId: 1, email: 1}, {unique: true});
+
+export const Subscribers =
+  (mongoose.models.subscriber as mongoose.Model<SubscriberDocument> | undefined) ||
+  mongoose.model<SubscriberDocument>("subscriber", subscriberSchema);

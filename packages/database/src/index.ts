@@ -4,6 +4,7 @@ import {Domain} from "./model/domain.model.js";
 import {Logs} from "./model/log.model.js";
 import {Subscribers} from "./model/subscribers.model.js";
 import {Topic} from "./model/topic.model.js";
+import {Webhook} from "./model/webhook.model.js";
 
 export {
     connectionDB,
@@ -11,5 +12,6 @@ export {
     Domain,
     Logs,
     Subscribers,
-    Topic
+    Topic,
+    Webhook
 }
