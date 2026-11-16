@@ -13,11 +13,13 @@
     "aws-sdk": "^2.1693.0",
     "bcrypt": "^6.0.0",
     "csv-parser": "^3.2.1",
+    "dotenv": "^18.0.10",
     "hono": "^4.13.14",
     "inngest": "^4.26.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.11.4",
-    "uuid": "^14.0.3"
+    "uuid": "^14.0.3",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

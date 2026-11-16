@@ -16,7 +16,7 @@ export class EmailController {
           topic,
         },
       });
-      c.status(200);
+      c.status(201);
       return c.json({ message: "success" });
     } catch (error) {
       console.error(error);

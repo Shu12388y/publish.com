@@ -5,6 +5,8 @@ import {Logs} from "./model/log.model.js";
 import {Subscribers} from "./model/subscribers.model.js";
 import {Topic} from "./model/topic.model.js";
 import {Webhook} from "./model/webhook.model.js";
+import {Campaign} from "./model/campaign.model.js";
+
 
 export {
     connectionDB,
@@ -13,5 +15,6 @@ export {
     Logs,
     Subscribers,
     Topic,
-    Webhook
+    Webhook,
+    Campaign
 }

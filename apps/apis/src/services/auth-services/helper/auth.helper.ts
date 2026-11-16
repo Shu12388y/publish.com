@@ -1,14 +1,18 @@
-import type {AuthTokenPayload} from "../../../utils/auth.utils.js";
+import type { AuthTokenPayload } from "../../../utils/auth.utils.js";
+import { z } from "zod";
 
-export type Credentials = {
-  email: string;
-  password: string;
-};
+const credentialsSchema = z.object({
+  email: z.string().trim().email(),
+  password: z.string(),
+});
 
-export type SignupInput = Credentials & {
-  fullname: string;
-  organization: string;
-};
+const signupSchema = credentialsSchema.extend({
+  fullname: z.string().trim().min(1),
+  organization: z.string().trim().min(1),
+});
+
+export type Credentials = z.infer<typeof credentialsSchema>;
+export type SignupInput = z.infer<typeof signupSchema>;
 
 export type AuthUtils = {
   hashPassword(password: string): Promise<string>;
@@ -16,26 +20,12 @@ export type AuthUtils = {
   createAuthToken(payload: AuthTokenPayload): string;
 };
 
-export function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
 export function isCredentials(value: unknown): value is Credentials {
-  return (
-    isRecord(value) &&
-    typeof value.email === "string" &&
-    typeof value.password === "string"
-  );
+  return credentialsSchema.safeParse(value).success;
 }
 
 export function isSignupInput(value: unknown): value is SignupInput {
-  return (
-    isRecord(value) &&
-    typeof value.email === "string" &&
-    typeof value.password === "string" &&
-    typeof value.fullname === "string" &&
-    typeof value.organization === "string"
-  );
+  return signupSchema.safeParse(value).success;
 }
 
 export function publicUser(user: {
@@ -55,5 +45,10 @@ export function publicUser(user: {
 }
 
 export function isDuplicateKeyError(error: unknown) {
-  return isRecord(error) && error.code === 11000;
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === 11000
+  );
 }

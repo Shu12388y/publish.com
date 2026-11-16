@@ -1,9 +1,10 @@
-import type {Context} from "hono";
-import {deleteCookie, setCookie} from "hono/cookie";
-import {v7 as uuidv7} from "uuid";
-import type {AuthRepository} from "../repo/auth.repo.js";
-import {AuthRepository as DefaultAuthRepository} from "../repo/auth.repo.js";
-import {authUtils as defaultAuthUtils} from "../../../utils/auth.utils.js";
+import type { Context } from "hono";
+import { deleteCookie, setCookie } from "hono/cookie";
+import { v7 as uuidv7 } from "uuid";
+import type { AuthVariables } from "../../topics-services/middleware/auth.middleware.js";
+import type { AuthRepository } from "../repo/auth.repo.js";
+import { AuthRepository as DefaultAuthRepository } from "../repo/auth.repo.js";
+import { authUtils as defaultAuthUtils } from "../../../utils/auth.utils.js";
 import {
   isCredentials,
   isDuplicateKeyError,
@@ -22,13 +23,16 @@ export class AuthController {
     try {
       const body: unknown = await c.req.json();
       if (!isCredentials(body) || !body.email.trim() || !body.password) {
-        return c.json({message: "Email and password are required"}, 400);
+        return c.json({ message: "Email and password are required" }, 400);
       }
 
       const email = body.email.trim().toLowerCase();
       const user = await this.repository.findByEmail(email);
-      if (!user || !(await this.authUtils.comparePassword(body.password, user.password))) {
-        return c.json({message: "Invalid email or password"}, 401);
+      if (
+        !user ||
+        !(await this.authUtils.comparePassword(body.password, user.password))
+      ) {
+        return c.json({ message: "Invalid email or password" }, 401);
       }
 
       const token = this.authUtils.createAuthToken({
@@ -49,7 +53,7 @@ export class AuthController {
       });
     } catch (error) {
       console.error("Login failed", error);
-      return c.json({message: "Internal Server Error"}, 500);
+      return c.json({ message: "Internal Server Error" }, 500);
     }
   };
 
@@ -64,14 +68,16 @@ export class AuthController {
         !body.organization.trim()
       ) {
         return c.json(
-          {message: "Email, password, fullname, and organization are required"},
+          {
+            message: "Email, password, fullname, and organization are required",
+          },
           400,
         );
       }
 
       if (body.password.length < 8) {
         return c.json(
-          {message: "Password must be at least 8 characters long"},
+          { message: "Password must be at least 8 characters long" },
           400,
         );
       }
@@ -84,7 +90,7 @@ export class AuthController {
       );
       if (existingUser) {
         return c.json(
-          {message: "Email or organization is already registered"},
+          { message: "Email or organization is already registered" },
           409,
         );
       }
@@ -107,18 +113,32 @@ export class AuthController {
     } catch (error) {
       if (isDuplicateKeyError(error)) {
         return c.json(
-          {message: "Email or organization is already registered"},
+          { message: "Email or organization is already registered" },
           409,
         );
       }
       console.error("Signup failed", error);
-      return c.json({message: "Internal Server Error"}, 500);
+      return c.json({ message: "Internal Server Error" }, 500);
     }
   };
 
   signout = (c: Context) => {
-    deleteCookie(c, "session", {path: "/"});
-    return c.json({message: "Signed out successfully"});
+    deleteCookie(c, "session", { path: "/" });
+    return c.json({ message: "Signed out successfully" });
+  };
+
+  session = async (c: Context<{ Variables: AuthVariables }>) => {
+    try {
+      const user = await this.repository.findById(c.var.auth.sub);
+      if (!user) {
+        return c.json({ message: "User not found" }, 401);
+      }
+
+      return c.json({ user: publicUser(user) });
+    } catch (error) {
+      console.error("Session restore failed", error);
+      return c.json({ message: "Could not restore session" }, 500);
+    }
   };
 }
 

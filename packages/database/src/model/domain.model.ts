@@ -1,24 +1,40 @@
 import mongoose from "mongoose";
 
-const domainSchema = new mongoose.Schema({
-    organizationId:{
-        type:String,
-        required:true
-    },
-    domain:{
-        type:String,
-        required:true
-    },
-    isVerify:{
-        type:Boolean,
-        default:false
-    },
-    newsletterMail:{
-        type:String,
-        required:true
-    }
-},{
-    timestamps:true
-});
+interface DomainDocument {
+  organizationId: string;
+  domain: string;
+  verificationToken?: string;
+  isVerify: boolean;
+  newsletterMail?: string;
+}
 
-export const Domain = mongoose.models.domains || mongoose.model("domain",domainSchema);
+const domainSchema = new mongoose.Schema<DomainDocument>(
+  {
+    organizationId: {
+      type: String,
+      required: true,
+    },
+    domain: {
+      type: String,
+      required: true,
+    },
+    verificationToken: {
+      type: String,
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
+    newsletterMail: {
+      type: String,
+      required: false,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+export const Domain =
+  (mongoose.models.domain as mongoose.Model<DomainDocument> | undefined) ||
+  mongoose.model<DomainDocument>("domain", domainSchema);

@@ -1,4 +1,4 @@
-import {Auth} from "@publish.com/database/db";
+import { Auth } from "@publish.com/database/db";
 
 export type CreateAuthUser = {
   email: string;
@@ -10,11 +10,15 @@ export type CreateAuthUser = {
 
 export class AuthRepository {
   findByEmail(email: string) {
-    return Auth.findOne({email});
+    return Auth.findOne({ email });
+  }
+
+  findById(id: string) {
+    return Auth.findById(id);
   }
 
   findByEmailOrOrganization(email: string, organization: string) {
-    return Auth.findOne({$or: [{email}, {organization}]});
+    return Auth.findOne({ $or: [{ email }, { organization }] });
   }
 
   createUser(user: CreateAuthUser) {
